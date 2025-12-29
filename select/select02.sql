@@ -61,7 +61,7 @@ where job = 'SALESMAN' and comm > 0
 MINUS  -- 차집합
 select *
 from emp
-where hiredate < '1982-01-01';
+where hiredate < '1982-01-01'
 
 --이전 수상기록이 저장된 테이블 정보
 
