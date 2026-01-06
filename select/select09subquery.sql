@@ -251,3 +251,103 @@ where a.pay < ( select avg(pay)
                 where b.emp_type = a.emp_type);
                 
                 
+                
+select 
+    ROWNUM,
+    ceil(ROWNUM /3),
+    studno,
+    name,
+    grade,
+    height
+from student
+order by height desc;
+            
+  select ROWNUM,rn , team ,studno,name          
+ from(select 
+    ROWNUM rn,
+    ceil(ROWNUM /3)team,
+    studno,
+    name,
+    grade,
+    height
+from student
+order by height desc);         
+
+-- 키큰사람 5명
+select rownum,studno,name,height
+from student
+where rownum<=5
+order by height desc;
+
+-- 키순으로 정렬된 테이블 상태를 기준으로 다시 rownum으로 인식해서 키큰사람 5명 조회 
+select rownum, studno,name,height
+from(
+select rownum, studno,name,height
+from student
+where rownum < = 5 
+order by height desc)
+where rownum <= 5 ;
+
+
+
+-- 팀 3 조회 안되는 케이스 
+select 
+    ROWNUM rn,
+    ceil(ROWNUM /3)team,
+    studno,
+    name,
+    grade,
+    height
+from student
+where  ceil(ROWNUM /3) = 3;
+
+select *
+from(   select 
+            ROWNUM rn,
+            ceil(ROWNUM /3)team,
+            studno,
+            name,
+            grade,
+            height
+        from student)
+where team  = 3;
+
+/*************************************/
+집계 -> group by -> 서브쿼리, join 
+
+부서번호, 부서별 최대급여, 부서명  
+select deptno,max(sal)
+from emp
+group by deptno;
+                
+select * from dept;                
+
+-->group by 집계 -> join
+select e.deptno, e.max_sal, d.dname
+from
+    (select deptno,max(sal) max_sal
+        from emp
+        group by deptno)e ,
+dept d
+where e.deptno = d.deptno;
+
+-->group by 집계 select subquery
+
+select 
+e.deptno, 
+e.max_sal,
+    (select d.dname
+    from dept d
+    where d.deptno = e.deptno) dname
+from 
+    (select deptno, MAX(sal) max_sal
+    from emp
+group by deptno) e;
+
+--> JOIN -> group by 집계 
+select deptno,dname ,MAX(sal)
+from (
+    select e.deptno, e.sal, d.dname
+    from emp e,dept d
+    where e.deptno = d.deptno )
+group by deptno, dname;
